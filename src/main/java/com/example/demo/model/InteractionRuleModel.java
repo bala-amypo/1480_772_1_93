@@ -1,84 +1,60 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "interaction_rules", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"ingredientA_id", "ingredientB_id"})
+})
 public class InteractionRuleModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // first medication name
-    private String medicationA;
+    @ManyToOne
+    @JoinColumn(name = "ingredientA_id", nullable = false)
+    private ActiveIngredientModel ingredientA;
 
-    // second medication name
-    private String medicationB;
+    @ManyToOne
+    @JoinColumn(name = "ingredientB_id", nullable = false)
+    private ActiveIngredientModel ingredientB;
 
-    // description of interaction
+    @Column(nullable = false)
+    private String severity; // MINOR / MODERATE / MAJOR
+
+    @Column(nullable = false)
     private String description;
 
-    // severity level (LOW / MEDIUM / HIGH)
-    private String severity;
+    public InteractionRuleModel() {}
 
-    // constructors
-    public InteractionRuleModel() {
-    }
-
-    public InteractionRuleModel(
-            Long id,
-            String medicationA,
-            String medicationB,
-            String description,
-            String severity) {
+    public InteractionRuleModel(Long id, ActiveIngredientModel ingredientA,
+                                ActiveIngredientModel ingredientB, String severity, String description) {
         this.id = id;
-        this.medicationA = medicationA;
-        this.medicationB = medicationB;
-        this.description = description;
+        this.ingredientA = ingredientA;
+        this.ingredientB = ingredientB;
         this.severity = severity;
-    }
-
-    // getters & setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getMedicationA() {
-        return medicationA;
-    }
-
-    public void setMedicationA(String medicationA) {
-        this.medicationA = medicationA;
-    }
-
-    public String getMedicationB() {
-        return medicationB;
-    }
-
-    public void setMedicationB(String medicationB) {
-        this.medicationB = medicationB;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
         this.description = description;
     }
 
-    public String getSeverity() {
-        return severity;
+    @PrePersist
+    private void normalizePairing() {
+        if (ingredientA.getId() > ingredientB.getId()) {
+            ActiveIngredientModel temp = ingredientA;
+            ingredientA = ingredientB;
+            ingredientB = temp;
+        }
     }
 
-    public void setSeverity(String severity) {
-        this.severity = severity;
-    }
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public ActiveIngredientModel getIngredientA() { return ingredientA; }
+    public void setIngredientA(ActiveIngredientModel ingredientA) { this.ingredientA = ingredientA; }
+    public ActiveIngredientModel getIngredientB() { return ingredientB; }
+    public void setIngredientB(ActiveIngredientModel ingredientB) { this.ingredientB = ingredientB; }
+    public String getSeverity() { return severity; }
+    public void setSeverity(String severity) { this.severity = severity; }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 }
