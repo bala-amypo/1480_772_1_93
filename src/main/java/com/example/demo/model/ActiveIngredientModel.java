@@ -14,8 +14,6 @@ public class ActiveIngredientModel {
 
     private String name;
 
-    private String description;
-
     // constructors
     public ActiveIngredientModel() {
     }
@@ -23,7 +21,7 @@ public class ActiveIngredientModel {
     public ActiveIngredientModel(Long id, String name, String description) {
         this.id = id;
         this.name = name;
-        this.description = description;
+        
     }
 
     // getters & setters
@@ -43,11 +41,4 @@ public class ActiveIngredientModel {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 }

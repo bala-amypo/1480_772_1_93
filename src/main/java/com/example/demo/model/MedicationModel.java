@@ -14,16 +14,16 @@ public class MedicationModel {
 
     private String name;
 
-    private String manufacturer;
+    private String ingredient;
 
     // constructors
     public MedicationModel() {
     }
 
-    public MedicationModel(Long id, String name, String manufacturer) {
+    public MedicationModel(Long id, String name, String ingredient) {
         this.id = id;
         this.name = name;
-        this.manufacturer = manufacturer;
+        this.ingredient = ingredient;
     }
 
     // getters & setters
@@ -44,10 +44,10 @@ public class MedicationModel {
     }
 
     public String getManufacturer() {
-        return manufacturer;
+        return ingredient;
     }
 
-    public void setManufacturer(String manufacturer) {
-        this.manufacturer = manufacturer;
+    public void setManufacturer(String ingredient) {
+        this.ingredient = ingredient;
     }
 }

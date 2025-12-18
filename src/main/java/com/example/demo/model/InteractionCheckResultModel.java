@@ -13,15 +13,11 @@ public class InteractionCheckResultModel {
     private Long id;
 
     // medications checked
-    private String medicationA;
-    private String medicationB;
+    private String medications;
 
     // result details
-    private String description;
-    private String severity;
+    private String interactions;
 
-    // status (SAFE / WARNING / DANGEROUS)
-    private String status;
 
     // constructors
     public InteractionCheckResultModel() {
@@ -29,17 +25,11 @@ public class InteractionCheckResultModel {
 
     public InteractionCheckResultModel(
             Long id,
-            String medicationA,
-            String medicationB,
-            String description,
-            String severity,
-            String status) {
+            String medications,
+            String interactions) {
         this.id = id;
-        this.medicationA = medicationA;
-        this.medicationB = medicationB;
-        this.description = description;
-        this.severity = severity;
-        this.status = status;
+        this.medications = medications;
+        this.interactions = interactions;
     }
 
     // getters & setters
@@ -51,43 +41,19 @@ public class InteractionCheckResultModel {
         this.id = id;
     }
 
-    public String getMedicationA() {
-        return medicationA;
+    public String getMedications() {
+        return medications;
     }
 
-    public void setMedicationA(String medicationA) {
-        this.medicationA = medicationA;
+    public void setMedications(String medications) {
+        this.medications = medications;
     }
 
-    public String getMedicationB() {
-        return medicationB;
+    public String getInteractions() {
+        return interactions;
     }
 
-    public void setMedicationB(String medicationB) {
-        this.medicationB = medicationB;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getSeverity() {
-        return severity;
-    }
-
-    public void setSeverity(String severity) {
-        this.severity = severity;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
+    public void setInteractions(String interactions) {
+        this.interactions = interactions;
     }
 }
