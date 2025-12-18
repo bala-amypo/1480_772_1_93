@@ -45,9 +45,9 @@ public class UserModel {
     public void setRole(String role) {
         this.role = role;
     }
-    public UserEntity() {
+    public UserModel() {
     }
-    public UserEntity(Long id, String name, String email, String password, String role) {
+    public UserModel(Long id, String name, String email, String password, String role) {
         this.id = id;
         this.name = name;
         this.email = email;
