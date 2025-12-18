@@ -7,14 +7,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class LocationEntity {
+public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String email;
     private String password;
-    private String rol
+    private String role;
     public Long getId() {
         return id;
     }
@@ -27,24 +27,32 @@ public class LocationEntity {
     public void setName(String name) {
         this.name = name;
     }
-    public Double getLatitude() {
-        return latitude;
+    public String getEmail() {
+        return email;
     }
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
+    public void setEmail(String email) {
+        this.email = email;
     }
-    public Double getLongitude() {
-        return longitude;
+    public String getPassword() {
+        return password;
     }
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
+    public void setPassword(String password) {
+        this.password = password;
     }
-    public LocationEntity() {
+    public String getRole() {
+        return role;
     }
-    public LocationEntity(Long id, String name, Double latitude, Double longitude) {
+    public void setRole(String role) {
+        this.role = role;
+    }
+    public UserEntity() {
+    }
+    public UserEntity(Long id, String name, String email, String password, String role) {
         this.id = id;
         this.name = name;
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.email = email;
+        this.password = password;
+        this.role = role;
     }
+    
 }
