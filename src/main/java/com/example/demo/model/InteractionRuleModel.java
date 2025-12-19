@@ -40,4 +40,15 @@ public class InteractionRuleModel {
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public ActiveIngredie
+    public ActiveIngredientModel getIngredientA() { return ingredientA; }
+    public void setIngredientA(ActiveIngredientModel ingredientA) { this.ingredientA = ingredientA; }
+
+    public ActiveIngredientModel getIngredientB() { return ingredientB; }
+    public void setIngredientB(ActiveIngredientModel ingredientB) { this.ingredientB = ingredientB; }
+
+    public String getSeverity() { return severity; }
+    public void setSeverity(String severity) { this.severity = severity; }
+
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+}
