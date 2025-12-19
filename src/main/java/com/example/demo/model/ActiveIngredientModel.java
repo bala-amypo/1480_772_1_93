@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,19 +13,20 @@ public class ActiveIngredientModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true, nullable = false)
     private String name;
 
-    // constructors
+    // Default constructor
     public ActiveIngredientModel() {
     }
 
-    public ActiveIngredientModel(Long id, String name, String description) {
+    // Optional parameterized constructor
+    public ActiveIngredientModel(Long id, String name) {
         this.id = id;
         this.name = name;
-        
     }
 
-    // getters & setters
+    // Getters & Setters
     public Long getId() {
         return id;
     }
@@ -40,5 +42,4 @@ public class ActiveIngredientModel {
     public void setName(String name) {
         this.name = name;
     }
-
 }
