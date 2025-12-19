@@ -1,8 +1,9 @@
 package com.example.demo.service;
 
-import org.springframework.stereotype.Service;
 import com.example.demo.model.UserModel;
 import com.example.demo.repository.UserRepository;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -18,18 +19,13 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new RuntimeException("Email already exists");
         }
+        user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
         return userRepository.save(user);
     }
 
     @Override
-    public UserModel login(UserModel user) {
-        UserModel existingUser = userRepository.findByEmail(user.getEmail())
+    public UserModel findByEmail(String email) {
+        return userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-
-        if (!existingUser.getPassword().equals(user.getPassword())) {
-            throw new RuntimeException("Invalid credentials");
-        }
-
-        return existingUser;
     }
 }
