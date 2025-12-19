@@ -33,8 +33,7 @@ public class InteractionRuleController {
     // check interaction
     @GetMapping("/check")
     public InteractionRuleModel check(
-            @RequestParam String medA,
-            @RequestParam String medB) {
-        return service.checkInteraction(medA, medB);
+            @RequestParam String med) {
+        return service.checkInteraction(med);
     }
 }
