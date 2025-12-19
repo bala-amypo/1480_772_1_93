@@ -1,29 +1,32 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.MedicationModel;
+import com.example.demo.service.MedicationService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
-import com.example.demo.model.MedicationModel;
-import com.example.demo.service.MedicationService;
-
 @RestController
-@RequestMapping("/medications")
+@RequestMapping("/catalog")
 public class MedicationController {
 
-    private final MedicationService service;
+    private final MedicationService medicationService;
 
-    public MedicationController(MedicationService service) {
-        this.service = service;
+    public MedicationController(MedicationService medicationService) {
+        this.medicationService = medicationService;
     }
 
-    @PostMapping
-    public MedicationModel addMedication(
-            @RequestBody MedicationModel medication) {
-        return service.save(medication);
+    @PostMapping("/medication")
+    public MedicationModel addMedication(@RequestBody MedicationModel medication) {
+        return medicationService.addMedication(medication);
     }
 
-    @GetMapping
+    @GetMapping("/medications")
     public List<MedicationModel> getAllMedications() {
-        return service.getAll();
+        return medicationService.getAllMedications();
+    }
+
+    @GetMapping("/medication/{id}")
+    public MedicationModel getMedication(@PathVariable Long id) {
+        return medicationService.getMedicationById(id);
     }
 }
