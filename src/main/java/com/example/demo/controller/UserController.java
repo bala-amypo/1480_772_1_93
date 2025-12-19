@@ -1,52 +1,31 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.AuthResponse;
-import com.example.demo.dto.LoginRequest;
-import com.example.demo.dto.RegisterRequest;
 import com.example.demo.model.UserModel;
 import com.example.demo.service.UserService;
-import com.example.demo.util.JwtUtil;
-import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/user")
 public class UserController {
 
     private final UserService userService;
-    private final JwtUtil jwtUtil;
 
-    public UserController(UserService userService, JwtUtil jwtUtil) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.jwtUtil = jwtUtil;
     }
 
+    // POST /user/register
     @PostMapping("/register")
-    public AuthResponse register(@RequestBody RegisterRequest request) {
-        // Convert DTO to UserModel and register
-        UserModel user = userService.register(request.toUser());
-
-        // Generate JWT token
-        String token = jwtUtil.generateToken(user);
-
-        // Return token + user info
-        return new AuthResponse(token, user.getId(), user.getEmail(), user.getRole());
+    public ResponseEntity<UserModel> register(@RequestBody UserModel user) {
+        UserModel savedUser = userService.register(user);
+        return ResponseEntity.ok(savedUser);
     }
 
+    // POST /user/login
     @PostMapping("/login")
-    public AuthResponse login(@RequestBody LoginRequest request) {
-        // Find user by email
-        UserModel user = userService.findByEmail(request.getEmail());
-
-        // Check password
-        if (!BCrypt.checkpw(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid credentials");
-        }
-
-        // Generate JWT token
-        String token = jwtUtil.generateToken(user);
-
-        // Return token + user info
-        return new AuthResponse(token, user.getId(), user.getEmail(), user.getRole());
+    public ResponseEntity<UserModel> login(@RequestBody UserModel user) {
+        UserModel loggedInUser = userService.login(user);
+        return ResponseEntity.ok(loggedInUser);
     }
 }

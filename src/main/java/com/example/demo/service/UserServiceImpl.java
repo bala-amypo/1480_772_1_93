@@ -2,7 +2,6 @@ package com.example.demo.service;
 
 import com.example.demo.model.UserModel;
 import com.example.demo.repository.UserRepository;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,13 +18,20 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new RuntimeException("Email already exists");
         }
-        user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
+        // No hashing for now
+        user.setRole("USER");
         return userRepository.save(user);
     }
 
     @Override
-    public UserModel findByEmail(String email) {
-        return userRepository.findByEmail(email)
+    public UserModel login(UserModel user) {
+        UserModel existingUser = userRepository.findByEmail(user.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (!existingUser.getPassword().equals(user.getPassword())) {
+            throw new RuntimeException("Invalid credentials");
+        }
+
+        return existingUser;
     }
 }
