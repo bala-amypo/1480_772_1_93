@@ -1,39 +1,35 @@
 package com.example.demo.controller;
 
-import org.springframework.web.bind.annotation.*;
-import java.util.List;
-
 import com.example.demo.model.InteractionRuleModel;
 import com.example.demo.service.InteractionRuleService;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/rules")
 public class InteractionRuleController {
 
-    private final InteractionRuleService service;
+    private final InteractionRuleService ruleService;
 
-    public InteractionRuleController(
-            InteractionRuleService service) {
-        this.service = service;
+    public InteractionRuleController(InteractionRuleService ruleService) {
+        this.ruleService = ruleService;
     }
 
-    // add rule
-    @PostMapping
-    public InteractionRuleModel addRule(
-            @RequestBody InteractionRuleModel rule) {
-        return service.saveRule(rule);
+    // Add a new interaction rule
+    @PostMapping("/")
+    public InteractionRuleModel addRule(@RequestBody InteractionRuleModel rule) {
+        return ruleService.addRule(rule);
     }
 
-    // list all rules
-    @GetMapping
-    public List<InteractionRuleModel> getRules() {
-        return service.getAllRules();
+    // Get all interaction rules
+    @GetMapping("/")
+    public List<InteractionRuleModel> getAllRules() {
+        return ruleService.getAllRules();
     }
 
-    // check interaction
-    @GetMapping("/check")
-    public InteractionRuleModel check(
-            @RequestParam String med) {
-        return service.checkInteraction(med);
+    // Get a single rule by ID
+    @GetMapping("/{id}")
+    public InteractionRuleModel getRuleById(@PathVariable Long id) {
+        return ruleService.getRuleById(id);
     }
 }
