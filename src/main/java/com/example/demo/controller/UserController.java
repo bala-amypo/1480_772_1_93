@@ -1,45 +1,52 @@
-package com.example.demo.model;
+package com.example.demo.controller;
 
-import jakarta.persistence.*;
+import com.example.demo.dto.AuthResponse;
+import com.example.demo.dto.LoginRequest;
+import com.example.demo.dto.RegisterRequest;
+import com.example.demo.model.UserModel;
+import com.example.demo.service.UserService;
+import com.example.demo.util.JwtUtil;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.web.bind.annotation.*;
 
-@Entity
-@Table(name = "users")
-public class UserModel {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@RestController
+@RequestMapping("/auth")
+public class UserController {
 
-    @Column(nullable = false)
-    private String name;
+    private final UserService userService;
+    private final JwtUtil jwtUtil;
 
-    @Column(nullable = false, unique = true)
-    private String email;
-
-    @Column(nullable = false)
-    private String password;
-
-    @Column(nullable = false)
-    private String role = "USER"; // default role
-
-    public UserModel() {}
-
-    public UserModel(Long id, String name, String email, String password, String role) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.role = role;
+    public UserController(UserService userService, JwtUtil jwtUtil) {
+        this.userService = userService;
+        this.jwtUtil = jwtUtil;
     }
 
-    // Getters & Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
-    public String getRole() { return role; }
-    public void setRole(String role) { this.role = role; }
+    @PostMapping("/register")
+    public AuthResponse register(@RequestBody RegisterRequest request) {
+        // Convert DTO to UserModel and register
+        UserModel user = userService.register(request.toUser());
+
+        // Generate JWT token
+        String token = jwtUtil.generateToken(user);
+
+        // Return token + user info
+        return new AuthResponse(token, user.getId(), user.getEmail(), user.getRole());
+    }
+
+    @PostMapping("/login")
+    public AuthResponse login(@RequestBody LoginRequest request) {
+        // Find user by email
+        UserModel user = userService.findByEmail(request.getEmail());
+
+        // Check password
+        if (!BCrypt.checkpw(request.getPassword(), user.getPassword())) {
+            throw new RuntimeException("Invalid credentials");
+        }
+
+        // Generate JWT token
+        String token = jwtUtil.generateToken(user);
+
+        // Return token + user info
+        return new AuthResponse(token, user.getId(), user.getEmail(), user.getRole());
+    }
 }
