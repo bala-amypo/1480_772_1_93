@@ -1,29 +1,32 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.ActiveIngredientModel;
+import com.example.demo.service.ActiveIngredientService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
-import com.example.demo.model.ActiveIngredientModel;
-import com.example.demo.service.ActiveIngredientService;
-
 @RestController
-@RequestMapping("/ingredients")
+@RequestMapping("/catalog")
 public class ActiveIngredientController {
 
-    private final ActiveIngredientService service;
+    private final ActiveIngredientService ingredientService;
 
-    public ActiveIngredientController(ActiveIngredientService service) {
-        this.service = service;
+    public ActiveIngredientController(ActiveIngredientService ingredientService) {
+        this.ingredientService = ingredientService;
     }
 
-    @PostMapping
-    public ActiveIngredientModel addIngredient(
-            @RequestBody ActiveIngredientModel ingredient) {
-        return service.save(ingredient);
+    @PostMapping("/ingredient")
+    public ActiveIngredientModel addIngredient(@RequestBody ActiveIngredientModel ingredient) {
+        return ingredientService.addIngredient(ingredient);
     }
 
-    @GetMapping
+    @GetMapping("/ingredients")
     public List<ActiveIngredientModel> getAllIngredients() {
-        return service.getAll();
+        return ingredientService.getAllIngredients();
+    }
+
+    @GetMapping("/ingredient/{id}")
+    public ActiveIngredientModel getIngredient(@PathVariable Long id) {
+        return ingredientService.getIngredientById(id);
     }
 }

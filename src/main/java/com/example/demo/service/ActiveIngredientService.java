@@ -5,7 +5,9 @@ import java.util.List;
 
 public interface ActiveIngredientService {
 
-    ActiveIngredientModel save(ActiveIngredientModel ingredient);
+    ActiveIngredientModel addIngredient(ActiveIngredientModel ingredient);
 
-    List<ActiveIngredientModel> getAll();
+    List<ActiveIngredientModel> getAllIngredients();
+
+    ActiveIngredientModel getIngredientById(Long id);
 }

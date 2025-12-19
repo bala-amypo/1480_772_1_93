@@ -1,7 +1,7 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "medications")
@@ -20,28 +20,23 @@ public class MedicationModel {
         joinColumns = @JoinColumn(name = "medication_id"),
         inverseJoinColumns = @JoinColumn(name = "ingredient_id")
     )
-    private Set<ActiveIngredientModel> ingredients;
+    private List<ActiveIngredientModel> ingredients;
 
     public MedicationModel() {}
 
-    public MedicationModel(Long id, String name, Set<ActiveIngredientModel> ingredients) {
+    public MedicationModel(Long id, String name, List<ActiveIngredientModel> ingredients) {
         this.id = id;
         this.name = name;
         this.ingredients = ingredients;
     }
 
-    @PrePersist
-    private void validateIngredients() {
-        if (ingredients == null || ingredients.isEmpty()) {
-            throw new IllegalArgumentException("Medication must have at least one ingredient");
-        }
-    }
-
-    // Getters and Setters
+    // Getters & Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
+
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
-    public Set<ActiveIngredientModel> getIngredients() { return ingredients; }
-    public void setIngredients(Set<ActiveIngredientModel> ingredients) { this.ingredients = ingredients; }
+
+    public List<ActiveIngredientModel> getIngredients() { return ingredients; }
+    public void setIngredients(List<ActiveIngredientModel> ingredients) { this.ingredients = ingredients; }
 }
