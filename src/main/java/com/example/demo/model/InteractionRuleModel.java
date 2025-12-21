@@ -29,7 +29,7 @@ public class InteractionRuleModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 🔴 REQUIRED ONLY FOR TEST METHOD PARSING
+    // REQUIRED ONLY FOR TEST METHOD PARSING
     @Column(name = "ingredientid")
     private Long ingredientid;
 
