@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -10,31 +9,20 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
 
-    public AuthController(UserService userService, PasswordEncoder passwordEncoder) {
+    public AuthController(UserService userService) {
         this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     // Register user
     @PostMapping("/register")
-    public User registerUser(@RequestBody User user) {
-        // Hash password manually in controller (since JwtUtil removed)
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        if (user.getRole() == null) {
-            user.setRole("USER");
-        }
-        return userService.registerUser(user);
+    public User register(@RequestBody User user) {
+        return userService.register(user);
     }
 
-    // Login (simple validation, returns boolean success)
+    // Login user (simple check)
     @PostMapping("/login")
-    public String login(@RequestBody User user) {
-        User existing = userService.findByEmail(user.getEmail());
-        if (existing == null || !passwordEncoder.matches(user.getPassword(), existing.getPassword())) {
-            return "Invalid credentials";
-        }
-        return "Login successful for user: " + existing.getEmail();
+    public User login(@RequestBody User user) {
+        return userService.login(user.getEmail(), user.getPassword());
     }
 }
