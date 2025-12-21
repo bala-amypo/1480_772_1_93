@@ -17,19 +17,16 @@ public class CatalogController {
         this.catalogService = catalogService;
     }
 
-    // Add new ingredient
     @PostMapping("/ingredient")
     public ActiveIngredient addIngredient(@RequestBody ActiveIngredient ingredient) {
         return catalogService.addIngredient(ingredient);
     }
 
-    // Add new medication
     @PostMapping("/medication")
     public Medication addMedication(@RequestBody Medication medication) {
         return catalogService.addMedication(medication);
     }
 
-    // Get all medications
     @GetMapping("/medications")
     public List<Medication> getAllMedications() {
         return catalogService.getAllMedications();
