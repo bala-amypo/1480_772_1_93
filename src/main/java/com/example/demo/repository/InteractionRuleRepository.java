@@ -1,16 +1,10 @@
 package com.example.demo.repository;
 
-import com.example.demo.model.InteractionRuleModel;
+import com.example.demo.model.InteractionRule;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface InteractionRuleRepository
-        extends JpaRepository<InteractionRuleModel, Long> {
-
-    //MUST match entity field names
-    Optional<InteractionRuleModel> findByIngredientA_IdAndIngredientB_Id(
-            Long ingredientAId,
-            Long ingredientBId
-    );
+public interface InteractionRuleRepository extends JpaRepository<InteractionRule, Long> {
+    Optional<InteractionRule> findByIngredientAIdAndIngredientBId(Long a, Long b);
 }
