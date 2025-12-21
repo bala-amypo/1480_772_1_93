@@ -16,14 +16,15 @@ public class InteractionController {
         this.interactionService = interactionService;
     }
 
+    // Endpoint to check interactions between medications
     @PostMapping("/check")
     public InteractionCheckResult checkInteractions(@RequestBody List<Long> medicationIds) {
         return interactionService.checkInteractions(medicationIds);
     }
 
+    // Endpoint to get a previously stored interaction result by ID
     @GetMapping("/result/{id}")
     public InteractionCheckResult getResult(@PathVariable Long id) {
         return interactionService.getResult(id);
     }
 }
-`
