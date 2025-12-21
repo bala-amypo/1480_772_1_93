@@ -11,3 +11,4 @@ public interface InteractionRuleService {
 
     InteractionRuleModel checkInteraction(String medA, String medB);
 }
+

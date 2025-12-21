@@ -10,3 +10,5 @@ public interface InteractionRuleRepository
     Optional<InteractionRuleModel>
     findByMedicationAAndMedicationB(String medicationA, String medicationB);
 }
+
+

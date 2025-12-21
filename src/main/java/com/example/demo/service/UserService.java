@@ -6,3 +6,4 @@ public interface UserService {
     UserModel register(UserModel user);
     UserModel login(UserModel user); 
 }
+

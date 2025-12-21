@@ -9,3 +9,5 @@ public interface MedicationService {
 
     List<MedicationModel> getAll();
 }
+
+

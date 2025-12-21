@@ -26,3 +26,4 @@ public class MedicationServiceImpl
         return repository.findAll();
     }
 }
+

@@ -33,3 +33,4 @@ public class InteractionCheckResultServiceImpl
         return repository.findById(id).orElse(null);
     }
 }
+

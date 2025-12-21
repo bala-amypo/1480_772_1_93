@@ -26,3 +26,5 @@ public class ActiveIngredientServiceImpl
         return repository.findAll();
     }
 }
+
+

@@ -12,3 +12,5 @@ public interface InteractionCheckResultService {
 
     InteractionCheckResultModel getResultById(Long id);
 }
+
+

@@ -9,3 +9,4 @@ public interface ActiveIngredientService {
 
     List<ActiveIngredientModel> getAll();
 }
+

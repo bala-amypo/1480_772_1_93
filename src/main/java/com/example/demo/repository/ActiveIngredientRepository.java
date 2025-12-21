@@ -6,3 +6,6 @@ import com.example.demo.model.ActiveIngredientModel;
 public interface ActiveIngredientRepository
         extends JpaRepository<ActiveIngredientModel, Long> {
 }
+  
+
+  

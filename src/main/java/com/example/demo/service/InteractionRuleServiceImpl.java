@@ -36,3 +36,4 @@ public class InteractionRuleServiceImpl
                 .orElse(null);
     }
 }
+
