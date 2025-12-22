@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
             user.setRole("USER");
         }
 
-        // ❌ NO password encoding (plain text for now)
+        
         return userRepository.save(user);
     }
 

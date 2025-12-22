@@ -28,17 +28,17 @@ public class Medication {
     )
     private Set<ActiveIngredient> ingredients = new HashSet<>();
 
-    // ✅ No-arg constructor (required by JPA)
+    
     public Medication() {
     }
 
-    // ✅ Parametric constructor
+    
     public Medication(String name) {
         this.name = name;
         this.ingredients = new HashSet<>();
     }
 
-    // ✅ Getters and Setters
+    
     public Long getId() {
         return id;
     }
@@ -59,7 +59,7 @@ public class Medication {
         this.ingredients = ingredients;
     }
 
-    // ✅ Helper methods
+    
     public void addIngredient(ActiveIngredient ingredient) {
         this.ingredients.add(ingredient);
     }

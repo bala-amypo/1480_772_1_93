@@ -20,7 +20,7 @@ public class AuthController {
         return userService.register(user);
     }
 
-    // Login user (simple check)
+    // Login user 
     @PostMapping("/login")
     public User login(@RequestBody User user) {
         return userService.login(user.getEmail(), user.getPassword());
