@@ -4,32 +4,35 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "interaction_check_results")
 public class InteractionCheckResult {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String medications;
-    private String interactions;
+    private String medications; // e.g., "Tylenol, Aspirin"
+
+    @Lob
+    private String interactions; // JSON string of interactions
 
     private LocalDateTime checkedAt = LocalDateTime.now();
 
     public InteractionCheckResult() {}
 
-    public InteractionCheckResult(String meds, String interactions) {
-        this.medications = meds;
+    public InteractionCheckResult(String medications, String interactions) {
+        this.medications = medications;
         this.interactions = interactions;
+        this.checkedAt = LocalDateTime.now();
     }
 
+    // Getters & Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
-
     public String getMedications() { return medications; }
     public void setMedications(String medications) { this.medications = medications; }
-
     public String getInteractions() { return interactions; }
     public void setInteractions(String interactions) { this.interactions = interactions; }
-
     public LocalDateTime getCheckedAt() { return checkedAt; }
+    public void setCheckedAt(LocalDateTime checkedAt) { this.checkedAt = checkedAt; }
 }
