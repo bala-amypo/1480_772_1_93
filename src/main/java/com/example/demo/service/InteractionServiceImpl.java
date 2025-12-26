@@ -11,60 +11,71 @@ import java.util.*;
 @Service
 public class InteractionServiceImpl implements InteractionService {
 
-    private final MedicationRepository medicationRepository;
-    private final InteractionRuleRepository ruleRepository;
-    private final InteractionCheckResultRepository resultRepository;
+    private final MedicationRepository medicationRepo;
+    private final InteractionRuleRepository ruleRepo;
+    private final InteractionCheckResultRepository resultRepo;
 
-    public InteractionServiceImpl(MedicationRepository medicationRepository,
-                                  InteractionRuleRepository ruleRepository,
-                                  InteractionCheckResultRepository resultRepository) {
-        this.medicationRepository = medicationRepository;
-        this.ruleRepository = ruleRepository;
-        this.resultRepository = resultRepository;
+    public InteractionServiceImpl(MedicationRepository medicationRepo,
+                                  InteractionRuleRepository ruleRepo,
+                                  InteractionCheckResultRepository resultRepo) {
+        this.medicationRepo = medicationRepo;
+        this.ruleRepo = ruleRepo;
+        this.resultRepo = resultRepo;
     }
 
     @Override
     public InteractionCheckResult checkInteractions(List<Long> medicationIds) {
 
         List<Medication> medications =
-                medicationRepository.findAllById(medicationIds);
+                medicationRepo.findAllById(medicationIds);
 
         if (medications.isEmpty()) {
-            throw new IllegalArgumentException("No medications provided");
+            throw new IllegalArgumentException("No medications found");
         }
 
         Set<ActiveIngredient> ingredients = new HashSet<>();
         medications.forEach(m -> ingredients.addAll(m.getIngredients()));
 
-        List<InteractionRule> detected = new ArrayList<>();
+        List<String> interactions = new ArrayList<>();
+        List<ActiveIngredient> list = new ArrayList<>(ingredients);
 
-        for (ActiveIngredient a : ingredients) {
-            for (ActiveIngredient b : ingredients) {
-                if (!a.getId().equals(b.getId())) {
-                    ruleRepository
-                      .findByIngredientAIdAndIngredientBId(a.getId(), b.getId())
-                      .ifPresent(detected::add);
-                }
+        for (int i = 0; i < list.size(); i++) {
+            for (int j = i + 1; j < list.size(); j++) {
+
+                ruleRepo.findRuleBetweenIngredients(
+                        list.get(i).getId(),
+                        list.get(j).getId()
+                ).ifPresent(rule ->
+                        interactions.add(
+                            rule.getIngredientA().getName()
+                            + " - "
+                            + rule.getIngredientB().getName()
+                            + " : "
+                            + rule.getSeverity()
+                        )
+                );
             }
         }
 
-        String meds = medications.stream()
-                .map(Medication::getName)
-                .reduce((x, y) -> x + "," + y)
-                .orElse("");
+        String meds =
+                medications.stream()
+                        .map(Medication::getName)
+                        .reduce((a, b) -> a + "," + b)
+                        .orElse("");
 
-        String json = "{ \"interactionCount\": " + detected.size() + " }";
+        String json = interactions.toString();
 
         InteractionCheckResult result =
                 new InteractionCheckResult(meds, json);
 
-        return resultRepository.save(result);
+        return resultRepo.save(result);
     }
 
     @Override
-    public InteractionCheckResult getResult(Long resultId) {
-        return resultRepository.findById(resultId)
+    public InteractionCheckResult getResult(Long id) {
+        return resultRepo.findById(id)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("Result not found"));
+                        new ResourceNotFoundException(
+                                "Result not found"));
     }
 }

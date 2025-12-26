@@ -12,35 +12,40 @@ import java.util.List;
 @Service
 public class CatalogServiceImpl implements CatalogService {
 
-    private final ActiveIngredientRepository ingredientRepository;
-    private final MedicationRepository medicationRepository;
+    private final ActiveIngredientRepository ingredientRepo;
+    private final MedicationRepository medicationRepo;
 
-    public CatalogServiceImpl(ActiveIngredientRepository ingredientRepository,
-                              MedicationRepository medicationRepository) {
-        this.ingredientRepository = ingredientRepository;
-        this.medicationRepository = medicationRepository;
+    public CatalogServiceImpl(ActiveIngredientRepository ingredientRepo,
+                              MedicationRepository medicationRepo) {
+        this.ingredientRepo = ingredientRepo;
+        this.medicationRepo = medicationRepo;
     }
 
     @Override
     public ActiveIngredient addIngredient(ActiveIngredient ingredient) {
-        if (ingredientRepository.existsByName(ingredient.getName())) {
+
+        if (ingredientRepo.existsByName(ingredient.getName())) {
             throw new IllegalArgumentException("Ingredient already exists");
         }
-        return ingredientRepository.save(ingredient);
+
+        return ingredientRepo.save(ingredient);
     }
 
     @Override
     public Medication addMedication(Medication medication) {
+
         if (medication.getIngredients() == null ||
             medication.getIngredients().isEmpty()) {
+
             throw new IllegalArgumentException(
                     "Medication must have at least one ingredient");
         }
-        return medicationRepository.save(medication);
+
+        return medicationRepo.save(medication);
     }
 
     @Override
     public List<Medication> getAllMedications() {
-        return medicationRepository.findAll();
+        return medicationRepo.findAll();
     }
 }

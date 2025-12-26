@@ -19,19 +19,19 @@ public class RuleServiceImpl implements RuleService {
     @Override
     public InteractionRule addRule(InteractionRule rule) {
 
-        String severity = rule.getSeverity();
-        if (!severity.equals("MINOR") &&
-            !severity.equals("MODERATE") &&
-            !severity.equals("MAJOR")) {
-            throw new IllegalArgumentException("Invalid severity level");
-        }
+        // Pair symmetry validation
+        ruleRepository.findRuleBetweenIngredients(
+                rule.getIngredientA().getId(),
+                rule.getIngredientB().getId()
+        ).ifPresent(r -> {
+            throw new IllegalArgumentException("Rule already exists");
+        });
 
-        Long a = rule.getIngredientA().getId();
-        Long b = rule.getIngredientB().getId();
+        // Severity validation
+        if (!List.of("MINOR", "MODERATE", "MAJOR")
+                .contains(rule.getSeverity())) {
 
-        if (ruleRepository.findByIngredientAIdAndIngredientBId(a, b).isPresent()
-         || ruleRepository.findByIngredientAIdAndIngredientBId(b, a).isPresent()) {
-            throw new IllegalArgumentException("Interaction rule already exists");
+            throw new IllegalArgumentException("Invalid severity");
         }
 
         return ruleRepository.save(rule);
