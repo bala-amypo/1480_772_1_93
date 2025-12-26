@@ -17,7 +17,8 @@ public class RuleController {
     }
 
     @PostMapping
-    public InteractionRule addRule(@RequestBody InteractionRule rule) {
+    public InteractionRule addRule(
+            @RequestBody InteractionRule rule) {
         return ruleService.addRule(rule);
     }
 
