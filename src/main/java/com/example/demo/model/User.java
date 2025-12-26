@@ -1,35 +1,25 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
-@Table(name = "users")
 public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
-
-    @Column(unique = true)
     private String email;
-
     private String password;
-
-    private String role = "USER"; // default
+    private String role = "USER";
 
     public User() {}
-
     public User(String name, String email, String password) {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.role = "USER";
     }
 
-    // Getters & Setters
+    // Getters & setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getName() { return name; }
@@ -40,17 +30,4 @@ public class User {
     public void setPassword(String password) { this.password = password; }
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
-
-    @Override
-    public boolean equals(Object o) {
-        if(this == o) return true;
-        if(!(o instanceof User)) return false;
-        User user = (User) o;
-        return Objects.equals(id, user.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }
