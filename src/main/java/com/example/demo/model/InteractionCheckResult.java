@@ -1,7 +1,6 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 
 @Entity
@@ -12,36 +11,54 @@ public class InteractionCheckResult {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty(message = "Medications list is required")
-    private String medications; // comma-separated names
+    private String medications;
 
-    @NotEmpty(message = "Interactions summary is required")
-    private String interactions; // JSON string
+    @Column(columnDefinition = "TEXT")
+    private String interactions;
 
     private LocalDateTime checkedAt;
 
-    // Default constructor
     public InteractionCheckResult() {
         this.checkedAt = LocalDateTime.now();
     }
 
-    // Parametric constructor
     public InteractionCheckResult(String medications, String interactions) {
         this.medications = medications;
         this.interactions = interactions;
         this.checkedAt = LocalDateTime.now();
     }
 
-    // Getters & Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    // getters & setters
 
-    public String getMedications() { return medications; }
-    public void setMedications(String medications) { this.medications = medications; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getInteractions() { return interactions; }
-    public void setInteractions(String interactions) { this.interactions = interactions; }
+    public String getMedications() {
+        return medications;
+    }
 
-    public LocalDateTime getCheckedAt() { return checkedAt; }
-    public void setCheckedAt(LocalDateTime checkedAt) { this.checkedAt = checkedAt; }
+    public String getInteractions() {
+        return interactions;
+    }
+
+    public LocalDateTime getCheckedAt() {
+        return checkedAt;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setMedications(String medications) {
+        this.medications = medications;
+    }
+
+    public void setInteractions(String interactions) {
+        this.interactions = interactions;
+    }
+
+    public void setCheckedAt(LocalDateTime checkedAt) {
+        this.checkedAt = checkedAt;
+    }
 }
