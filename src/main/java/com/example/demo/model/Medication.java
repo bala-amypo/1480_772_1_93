@@ -61,3 +61,69 @@
 //         return Objects.hash(getId());
 //     }
 // }
+
+package com.example.demo.model;
+
+import jakarta.persistence.*;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+
+@Entity
+@Table(name = "medications")
+public class Medication {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "medication_ingredient",
+            joinColumns = @JoinColumn(name = "medication_id"),
+            inverseJoinColumns = @JoinColumn(name = "ingredient_id")
+    )
+    private Set<ActiveIngredient> ingredients = new HashSet<>();
+
+    public Medication() {}
+
+    public Medication(String name) {
+        this.name = name;
+    }
+
+    // Getters & Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public Set<ActiveIngredient> getIngredients() { return ingredients; }
+    public void setIngredients(Set<ActiveIngredient> ingredients) { this.ingredients = ingredients; }
+
+    // Helper methods
+    public void addIngredient(ActiveIngredient ingredient) {
+        ingredients.add(ingredient);
+        ingredient.getMedications().add(this);
+    }
+
+    public void removeIngredient(ActiveIngredient ingredient) {
+        ingredients.remove(ingredient);
+        ingredient.getMedications().remove(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Medication)) return false;
+        Medication that = (Medication) o;
+        return Objects.equals(getId(), that.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
+    }
+}
