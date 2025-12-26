@@ -21,7 +21,7 @@
 // }
 
 
-package com.example.demo.;
+package com.example.demo.config;
 
 import com.example.demo.util.JwtUtil;
 import jakarta.servlet.FilterChain;
