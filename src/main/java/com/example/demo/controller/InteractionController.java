@@ -1,28 +1,66 @@
+// package com.example.demo.controller;
+
+// import com.example.demo.model.InteractionCheckResult;
+// import com.example.demo.service.InteractionService;
+// import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.http.ResponseEntity;
+// import org.springframework.web.bind.annotation.*;
+
+// import java.util.List;
+
+// @RestController
+// @RequestMapping("/api/interactions")
+// public class InteractionController {
+
+//     @Autowired
+//     private InteractionService interactionService;
+
+//     @PostMapping("/check")
+//     public ResponseEntity<InteractionCheckResult> checkInteractions(@RequestBody List<Long> medicationIds) {
+//         InteractionCheckResult result = interactionService.checkInteractions(medicationIds);
+//         return ResponseEntity.ok(result);
+//     }
+
+//     @GetMapping("/{id}")
+//     public ResponseEntity<InteractionCheckResult> getResult(@PathVariable Long id) {
+//         return ResponseEntity.ok(interactionService.getResult(id));
+//     }
+// }
+
+
+
 package com.example.demo.controller;
 
+import com.example.demo.dto.InteractionRequest;
 import com.example.demo.model.InteractionCheckResult;
 import com.example.demo.service.InteractionService;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/api/interactions")
+@RequestMapping("/interact")
+@Tag(name = "Interactions", description = "Evaluate Medication Combinations")
 public class InteractionController {
 
-    @Autowired
-    private InteractionService interactionService;
+    private final InteractionService interactionService;
 
-    @PostMapping("/check")
-    public ResponseEntity<InteractionCheckResult> checkInteractions(@RequestBody List<Long> medicationIds) {
-        InteractionCheckResult result = interactionService.checkInteractions(medicationIds);
-        return ResponseEntity.ok(result);
+    public InteractionController(InteractionService interactionService) {
+        this.interactionService = interactionService;
     }
 
-    @GetMapping("/{id}")
+    @PostMapping("/check")
+    @Operation(summary = "Check for interactions between a list of medication IDs")
+    public ResponseEntity<InteractionCheckResult> check(@RequestBody InteractionRequest request) {
+        // Test case 14 expects service.checkInteractions(List<Long>)
+        return ResponseEntity.ok(interactionService.checkInteractions(request.getMedicationIds()));
+    }
+
+    @GetMapping("/result/{id}")
+    @Operation(summary = "Retrieve a previous check result by ID")
     public ResponseEntity<InteractionCheckResult> getResult(@PathVariable Long id) {
+        // Test case 15 and 54 expect service.getResult(Long)
         return ResponseEntity.ok(interactionService.getResult(id));
     }
 }
