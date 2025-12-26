@@ -2,28 +2,24 @@ package com.example.demo.controller;
 
 import com.example.demo.model.InteractionRule;
 import com.example.demo.service.RuleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/rules")
+@RequestMapping("/api/rules")
 public class RuleController {
 
-    private final RuleService ruleService;
-
-    public RuleController(RuleService ruleService) {
-        this.ruleService = ruleService;
-    }
+    @Autowired
+    private RuleService ruleService;
 
     @PostMapping
-    public InteractionRule addRule(
-            @RequestBody InteractionRule rule) {
-        return ruleService.addRule(rule);
+    public ResponseEntity<InteractionRule> addRule(@RequestBody InteractionRule rule) {
+        return ResponseEntity.ok(ruleService.addRule(rule));
     }
 
-    @GetMapping
-    public List<InteractionRule> getAllRules() {
-        return ruleService.getAllRules();
+    @GetMapping("/{id}")
+    public ResponseEntity<InteractionRule> getRule(@PathVariable Long id) {
+        return ResponseEntity.ok(ruleService.getRule(id));
     }
 }
