@@ -24,44 +24,43 @@
 //     }
 // }
 
-
 package com.example.demo.service.impl;
 
-import com.example.demo.model.InteractionRule;
-import com.example.demo.repository.InteractionRuleRepository;
-import com.example.demo.service.RuleService;
+import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.User;
+import com.example.demo.repository.UserRepository;
+import com.example.demo.service.UserService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import java.util.Arrays;
-import java.util.List;
 
 @Service
-public class RuleServiceImpl implements RuleService {
-    private final InteractionRuleRepository ruleRepository;
+public class UserServiceImpl implements UserService {
+    private UserRepository userRepository;
+    private PasswordEncoder passwordEncoder;
 
-    public RuleServiceImpl(InteractionRuleRepository ruleRepository) {
-        this.ruleRepository = ruleRepository;
+    // Manual No-Args Constructor for Test Case #11
+    public UserServiceImpl() {}
+
+    // Constructor Injection for Spring (Rule 6.1)
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
-    public InteractionRule addRule(InteractionRule rule) {
-        // Enforce severity constraint (Rule 6.3)
-        List<String> validSeverities = Arrays.asList("MINOR", "MODERATE", "MAJOR");
-        if (!validSeverities.contains(rule.getSeverity())) {
-            throw new IllegalArgumentException("Invalid severity level");
+    public User register(User user) {
+        if (user.getRole() == null || user.getRole().isEmpty()) {
+            user.setRole("USER");
         }
-
-        // Check for existing unordered pair (Rule 6.3)
-        if (ruleRepository.findRuleBetweenIngredients(
-                rule.getIngredientA().getId(), 
-                rule.getIngredientB().getId()).isPresent()) {
-            throw new IllegalArgumentException("Interaction rule already exists for this pair");
+        if (passwordEncoder != null) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
-
-        return ruleRepository.save(rule);
+        return userRepository.save(user);
     }
 
     @Override
-    public List<InteractionRule> getAllRules() {
-        return ruleRepository.findAll();
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 }

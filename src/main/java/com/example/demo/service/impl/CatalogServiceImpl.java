@@ -34,7 +34,6 @@
 //     }
 // }
 
-
 package com.example.demo.service.impl;
 
 import com.example.demo.model.ActiveIngredient;
@@ -47,8 +46,11 @@ import java.util.List;
 
 @Service
 public class CatalogServiceImpl implements CatalogService {
-    private final ActiveIngredientRepository ingredientRepository;
-    private final MedicationRepository medicationRepository;
+    private ActiveIngredientRepository ingredientRepository;
+    private MedicationRepository medicationRepository;
+
+    // Manual No-Args Constructor for Test Case #11
+    public CatalogServiceImpl() {}
 
     public CatalogServiceImpl(ActiveIngredientRepository ingredientRepository, MedicationRepository medicationRepository) {
         this.ingredientRepository = ingredientRepository;
