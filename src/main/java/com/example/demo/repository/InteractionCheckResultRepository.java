@@ -1,8 +1,10 @@
 package com.example.demo.repository;
 
-import com.example.demo.model.*;
+import com.example.demo.model.InteractionCheckResult;
 import org.springframework.data.jpa.repository.JpaRepository;
-import java.util.*;
+import org.springframework.stereotype.Repository;
 
- 
-public interface InteractionCheckResultRepository extends JpaRepository<InteractionCheckResult, Long> {}
+@Repository
+public interface InteractionCheckResultRepository extends JpaRepository<InteractionCheckResult, Long> {
+    // You can add custom queries if needed
+}
