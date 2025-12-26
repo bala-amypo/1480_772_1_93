@@ -1,40 +1,34 @@
 package com.example.demo.security;
 
-import org.springframework.security.core.GrantedAuthority;
+import com.example.demo.model.User;
+import com.example.demo.service.UserService;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
-import java.util.Collection;
+import java.util.Collections;
 
-public class CustomUserDetails implements UserDetails {
+@Service
+public class CustomUserDetailsService implements UserDetailsService {
 
-    private final String username;
-    private final String password;
+    private final UserService userService;
 
-    public CustomUserDetails(String username, String password) {
-        this.username = username;
-        this.password = password;
+    public CustomUserDetailsService(UserService userService) {
+        this.userService = userService;
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = userService.findByEmail(email);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+
+        return new org.springframework.security.core.userdetails.User(
+                user.getEmail(),
+                user.getPassword(),
+                Collections.emptyList()
+        );
     }
-
-    @Override
-    public String getPassword() { return password; }
-
-    @Override
-    public String getUsername() { return username; }
-
-    @Override
-    public boolean isAccountNonExpired() { return true; }
-
-    @Override
-    public boolean isAccountNonLocked() { return true; }
-
-    @Override
-    public boolean isCredentialsNonExpired() { return true; }
-
-    @Override
-    public boolean isEnabled() { return true; }
 }
