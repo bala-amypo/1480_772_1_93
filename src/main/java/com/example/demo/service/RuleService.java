@@ -4,4 +4,5 @@ import com.example.demo.model.InteractionRule;
 
 public interface RuleService {
     InteractionRule addRule(InteractionRule rule);
+    InteractionRule getRule(Long id);  // ✅ added
 }

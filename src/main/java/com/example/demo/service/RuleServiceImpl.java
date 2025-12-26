@@ -16,4 +16,10 @@ public class RuleServiceImpl implements RuleService {
     public InteractionRule addRule(InteractionRule rule) {
         return ruleRepository.save(rule);
     }
+
+    @Override
+    public InteractionRule getRule(Long id) {  // ✅ fix
+        return ruleRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Rule not found"));
+    }
 }
